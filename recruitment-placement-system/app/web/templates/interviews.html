@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Interviews{% endblock %}
+{% block heading %}Interviews{% endblock %}
+{% block content %}
+<div class="panel"><h2>Schedule Interview</h2>
+<form method="post" action="{{ url_for('rpms.interview_schedule') }}" class="form-grid">
+  <div class="field"><label class="req">Application (Shortlisted / Interviewed)</label><select name="application_id" required><option value="">Select</option>{% for a in applications %}<option value="{{ a.application_id }}">{{ a.application_code }} - {{ a.candidate }} - {{ a.job_code }} ({{ a.application_status }})</option>{% endfor %}</select></div>
+  <div class="field"><label class="req">Round</label><select name="round_type">{% for r in ['APTITUDE','TECHNICAL','MANAGERIAL','HR'] %}<option>{{ r }}</option>{% endfor %}</select></div>
+  <div class="field"><label class="req">Date</label><input type="date" name="interview_date" required><div class="hint">आजच्या तारखेपेक्षा जुनी तारीख चालणार नाही.</div></div>
+  <div class="field"><label>Time</label><input type="time" name="interview_time"></div>
+  <div class="field"><label>Mode</label><select name="mode">{% for m in ['ONLINE','OFFLINE','TELEPHONIC'] %}<option>{{ m }}</option>{% endfor %}</select></div>
+  <div class="field"><label>Interviewer</label><input name="interviewer"></div>
+  <div class="field wide"><label>Meeting link / venue</label><input name="location"></div>
+  <div class="btn-row wide"><button class="btn" type="submit">Schedule</button></div>
+</form></div>
+<form method="get" class="panel"><div class="filters">
+  <div class="field"><label>Status</label><select name="status"><option value="">All</option>{% for s in ['SCHEDULED','RESCHEDULED','COMPLETED','NO_SHOW','CANCELLED'] %}<option {{ 'selected' if filters.status == s }}>{{ s }}</option>{% endfor %}</select></div>
+</div><div class="btn-row"><button class="btn" type="submit">Filter</button></div></form>
+<div class="panel"><div class="table-wrap"><table><thead><tr><th>ID</th><th>Candidate</th><th>Company</th><th>Round</th><th>Date &amp; Time</th><th>Mode</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+{% for i in rows %}<tr><td>{{ i.interview_id }}</td><td>{{ i.candidate }}</td><td>{{ i.company_name }}</td><td>{{ i.round_type }} (R{{ i.round_number }})</td><td>{{ i.scheduled_date }} {{ i.scheduled_time or '' }}</td><td>{{ i.mode }}</td><td>{{ i.status|badge }}</td>
+<td>
+  <form method="post" action="{{ url_for('rpms.interview_feedback', interview_id=i.interview_id) }}" class="inline-form"><select name="recommendation">{% for r in ['NEXT_ROUND','SELECTED','REJECTED','ON_HOLD'] %}<option>{{ r }}</option>{% endfor %}</select><input name="overall_rating" placeholder="Rating 0-5" size="6"><input name="remarks" placeholder="Remarks"><button class="btn btn-sm" type="submit">Save Feedback</button></form>
+  <form method="post" action="{{ url_for('rpms.interview_reschedule', interview_id=i.interview_id) }}" class="inline-form"><input type="date" name="interview_date" required><input type="time" name="interview_time"><button class="btn btn-sm btn-outline" type="submit">Reschedule</button></form>
+  <form method="post" action="{{ url_for('rpms.interview_no_show', interview_id=i.interview_id) }}" class="inline-form"><button class="btn btn-sm btn-danger" type="submit">No Show</button></form>
+</td></tr>
+{% else %}<tr><td colspan="8">No interviews.</td></tr>{% endfor %}
+</tbody></table></div></div>
+{% endblock %}

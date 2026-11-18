@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Candidates{% endblock %}
+{% block heading %}Candidate List{% endblock %}
+{% block content %}
+<form method="get" class="panel"><div class="filters">
+  <div class="field"><label>Candidate ID</label><input name="candidate_code" value="{{ filters.candidate_code }}"></div>
+  <div class="field"><label>Name</label><input name="full_name" value="{{ filters.full_name }}"></div>
+  <div class="field"><label>Mobile</label><input name="mobile" value="{{ filters.mobile }}"></div>
+  <div class="field"><label>Email</label><input name="email" value="{{ filters.email }}"></div>
+  <div class="field"><label>Technology</label><select name="primary_technology"><option value="">All</option>{% for t in technologies %}<option {{ 'selected' if filters.primary_technology == t }}>{{ t }}</option>{% endfor %}</select></div>
+  <div class="field"><label>Passing Year</label><input name="passing_year" value="{{ filters.passing_year }}"></div>
+  <div class="field"><label>Qualification</label><select name="qualification"><option value="">All</option>{% for q in qualifications %}<option {{ 'selected' if filters.qualification == q }}>{{ q }}</option>{% endfor %}</select></div>
+  <div class="field"><label>Placement Status</label><select name="placement_status"><option value="">All</option>{% for s in ['NOT_PLACED','PLACED'] %}<option {{ 'selected' if filters.placement_status == s }}>{{ s }}</option>{% endfor %}</select></div>
+</div>
+<div class="btn-row"><button class="btn" type="submit">Search</button><a class="btn btn-secondary" href="{{ url_for('rpms.candidates') }}">Reset</a><a class="btn" href="{{ url_for('rpms.candidate_new') }}">Add Candidate</a></div></form>
+<div class="panel"><div class="table-wrap"><table><thead><tr><th>Candidate ID</th><th>Name</th><th>Mobile</th><th>Email</th><th>Technology</th><th>Qualification</th><th>Year</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+{% for c in rows %}<tr><td>{{ c.candidate_code }}</td><td>{{ c.full_name }}</td><td>{{ c.mobile }}</td><td>{{ c.email }}</td><td>{{ c.primary_technology or '-' }}</td><td>{{ c.qualification }}</td><td>{{ c.passing_year }}</td>
+<td>{{ (c.placement_status if c.profile_status == 'ACTIVE' else c.profile_status)|badge }}</td>
+<td><a class="link-action" href="{{ url_for('rpms.candidate_detail', candidate_id=c.candidate_id) }}">View</a><a class="link-action" href="{{ url_for('rpms.candidate_edit', candidate_id=c.candidate_id) }}">Edit</a></td></tr>
+{% else %}<tr><td colspan="9">No candidates found.</td></tr>{% endfor %}
+</tbody></table></div></div>
+{% endblock %}

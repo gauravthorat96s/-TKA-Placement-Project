@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Applications{% endblock %}
+{% block heading %}Applications{% endblock %}
+{% block content %}
+<div class="panel"><h2>Apply Candidate to Job</h2>
+<form method="post" action="{{ url_for('rpms.application_apply') }}" class="form-grid">
+  <div class="field"><label class="req">Candidate</label><select name="candidate_id" required><option value="">Select</option>{% for c in candidates %}<option value="{{ c.candidate_id }}">{{ c.candidate_code }} - {{ c.full_name }}</option>{% endfor %}</select></div>
+  <div class="field"><label class="req">Open Job</label><select name="job_id" required><option value="">Select</option>{% for j in jobs %}<option value="{{ j.job_id }}">{{ j.job_code }} - {{ j.job_title }}</option>{% endfor %}</select></div>
+  <div class="field"><label>Source</label><select name="source">{% for s in ['Portal','Recruiter','Referral','Internal'] %}<option>{{ s }}</option>{% endfor %}</select></div>
+  <div class="btn-row wide"><button class="btn" type="submit">Apply (eligibility आधी तपासली जाईल)</button></div>
+</form></div>
+<form method="get" class="panel"><div class="filters">
+  <div class="field"><label>Status</label><select name="application_status"><option value="">All</option>{% for s in statuses %}<option {{ 'selected' if filters.application_status == s }}>{{ s }}</option>{% endfor %}</select></div>
+  <div class="field"><label>From</label><input type="date" name="date_from" value="{{ filters.date_from }}"></div>
+  <div class="field"><label>To</label><input type="date" name="date_to" value="{{ filters.date_to }}"></div>
+</div><div class="btn-row"><button class="btn" type="submit">Filter</button><a class="btn btn-secondary" href="{{ url_for('rpms.applications') }}">Reset</a></div></form>
+<div class="panel"><div class="table-wrap"><table><thead><tr><th>Application</th><th>Candidate</th><th>Company</th><th>Job</th><th>Eligibility</th><th>Status</th><th>Applied</th><th>Actions</th></tr></thead><tbody>
+{% for a in rows %}<tr><td>{{ a.application_code }}</td><td><a href="{{ url_for('rpms.candidate_detail', candidate_id=a.candidate_id) }}">{{ a.candidate }}</a></td><td>{{ a.company_name }}</td><td>{{ a.job_code }}</td><td>{{ a.eligibility_status|badge }}</td><td>{{ a.application_status|badge }}</td><td>{{ a.applied_at }}</td>
+<td>
+  <form method="post" action="{{ url_for('rpms.application_eligibility', application_id=a.application_id) }}" class="inline-form"><button class="btn btn-sm btn-outline" type="submit">Check Eligibility</button></form>
+  <form method="post" action="{{ url_for('rpms.application_status', application_id=a.application_id) }}" class="inline-form"><select name="status"><option>SHORTLISTED</option><option>ELIGIBILITY_VERIFIED</option><option>REJECTED</option><option>WITHDRAWN</option></select><input name="remarks" placeholder="Remarks"><button class="btn btn-sm" type="submit">Set</button></form>
+  <a class="link-action" href="{{ url_for('rpms.applications', history=a.application_id) }}">History</a>
+</td></tr>
+{% else %}<tr><td colspan="8">No applications.</td></tr>{% endfor %}
+</tbody></table></div></div>
+{% if history is not none %}
+<div class="panel"><h2>Status History (application ID {{ history_id }})</h2><div class="table-wrap"><table><thead><tr><th>From</th><th>To</th><th>Remarks</th><th>Changed At</th><th>By</th></tr></thead><tbody>
+{% for h in history %}<tr><td>{{ h.old_status or '-' }}</td><td>{{ h.new_status|badge }}</td><td>{{ h.remarks or '-' }}</td><td>{{ h.changed_at }}</td><td>{{ h.changed_by }}</td></tr>{% else %}<tr><td colspan="5">No history.</td></tr>{% endfor %}
+</tbody></table></div></div>
+{% endif %}
+{% endblock %}

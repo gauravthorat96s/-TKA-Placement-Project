@@ -1,0 +1,5 @@
+# Runtime: MySQL driver used by app/db/connection.py
+mysql-connector-python>=8.3,<10
+# Web app (run_web.py). Core tests use only the standard library; tests/test_web.py needs flask.
+flask>=3.0
+waitress>=3.0

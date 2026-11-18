@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block heading %}Dashboard{% endblock %}
+{% block content %}
+<div class="cards">
+  <div class="card-stat"><div class="label">Total Candidates</div><div class="value">{{ summary.total_candidates }}</div></div>
+  <div class="card-stat"><div class="label">Active Candidates</div><div class="value">{{ summary.active_candidates }}</div></div>
+  <div class="card-stat"><div class="label">Companies</div><div class="value">{{ summary.companies }}</div></div>
+  <div class="card-stat"><div class="label">Open Jobs</div><div class="value">{{ summary.open_jobs }}</div></div>
+  <div class="card-stat"><div class="label">Applications</div><div class="value">{{ summary.applications }}</div></div>
+  <div class="card-stat"><div class="label">Interviews Today</div><div class="value">{{ summary.interviews_today }}</div></div>
+  <div class="card-stat"><div class="label">Selected</div><div class="value">{{ summary.selected }}</div></div>
+  <div class="card-stat"><div class="label">Placed</div><div class="value">{{ summary.placed }}</div></div>
+</div>
+<div class="grid-2">
+  <div class="panel"><div class="panel-head"><h2>Recruitment Funnel</h2></div>
+    {% for name, value in [('Applications', funnel.applications), ('Shortlisted', funnel.shortlisted), ('Interviewed', funnel.interviewed), ('Selected', funnel.selected), ('Joined', funnel.joined)] %}
+      <div class="bar-row"><span>{{ name }}</span><div class="bar"><span style="width:{{ value * 100 // (funnel.applications or 1) }}%"></span></div><span class="count">{{ value }}</span></div>
+    {% endfor %}
+  </div>
+  <div class="panel"><div class="panel-head"><h2>Quick Actions</h2></div>
+    <div class="btn-row" style="flex-direction:column;align-items:stretch">
+      <a class="btn" href="{{ url_for('rpms.candidates') }}">View Candidates</a>
+      <a class="btn btn-secondary" href="{{ url_for('rpms.jobs') }}">View Open Jobs</a>
+      <a class="btn btn-secondary" href="{{ url_for('rpms.interviews') }}">View Interviews</a>
+      <a class="btn btn-secondary" href="{{ url_for('rpms.reports') }}">View Reports</a>
+    </div>
+  </div>
+</div>
+<div class="panel"><div class="panel-head"><h2>Upcoming Interviews</h2><a href="{{ url_for('rpms.interviews') }}">View all</a></div>
+<div class="table-wrap"><table><thead><tr><th>Candidate</th><th>Company</th><th>Round</th><th>Date</th><th>Time</th><th>Status</th></tr></thead><tbody>
+{% for i in pending[:5] %}<tr><td>{{ i.candidate }}</td><td>{{ i.company_name }}</td><td>{{ i.round_type }}</td><td>{{ i.scheduled_date }}</td><td>{{ i.scheduled_time or '-' }}</td><td>{{ i.status|badge }}</td></tr>
+{% else %}<tr><td colspan="6">No upcoming interviews.</td></tr>{% endfor %}
+</tbody></table></div></div>
+<div class="grid-2">
+  <div class="panel"><div class="panel-head"><h2>Recent Job Openings</h2><a href="{{ url_for('rpms.jobs') }}">View all</a></div>
+  <div class="table-wrap"><table><thead><tr><th>Job Code</th><th>Title</th><th>Company</th><th>Status</th></tr></thead><tbody>
+  {% for j in open_jobs %}<tr><td>{{ j.job_code }}</td><td>{{ j.job_title }}</td><td>{{ j.company_name }}</td><td>{{ j.status|badge }}</td></tr>{% else %}<tr><td colspan="4">No open jobs.</td></tr>{% endfor %}
+  </tbody></table></div></div>
+  <div class="panel"><div class="panel-head"><h2>Recent Placements</h2><a href="{{ url_for('rpms.placements') }}">Open process</a></div>
+  <div class="table-wrap"><table><thead><tr><th>Candidate</th><th>Company</th><th>Designation</th><th>Joining</th></tr></thead><tbody>
+  {% for p in placements %}<tr><td>{{ p.candidate }}</td><td>{{ p.company_name }}</td><td>{{ p.designation }}</td><td>{{ p.joining_status|badge }}</td></tr>{% else %}<tr><td colspan="4">No placements yet.</td></tr>{% endfor %}
+  </tbody></table></div></div>
+</div>
+{% endblock %}

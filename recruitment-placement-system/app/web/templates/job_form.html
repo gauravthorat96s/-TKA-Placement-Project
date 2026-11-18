@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Job Form{% endblock %}
+{% block heading %}{{ 'Edit Job' if job_id else 'Create Job' }}{% endblock %}
+{% block content %}
+{% set j = job or {} %}
+{% set chosen = (j.qualification_rule or '').split('/') if j.qualification_rule else (j.qualifications or []) %}
+<form method="post" class="panel">
+  <div class="section-title">Basic Information</div>
+  <div class="form-grid">
+    <div class="field"><label class="req">Company</label><select name="company_id" required>{% for c in companies %}<option value="{{ c.company_id }}" {{ 'selected' if j.company_id|string == c.company_id|string }}>{{ c.company_name }}</option>{% endfor %}</select></div>
+    <div class="field"><label class="req">Job Title</label><input name="job_title" value="{{ j.job_title or '' }}" required></div>
+    <div class="field"><label class="req">Number of Openings</label><input name="openings" value="{{ j.openings or '' }}" required><div class="hint">Must be greater than 0</div></div>
+    <div class="field"><label class="req">Employment Type</label><select name="employment_type">{% for t in ['FULL_TIME','INTERNSHIP','CONTRACT'] %}<option {{ 'selected' if j.employment_type == t }}>{{ t }}</option>{% endfor %}</select></div>
+    <div class="field"><label class="req">Location</label><input name="location" value="{{ j.location or '' }}" required></div>
+  </div>
+  <div class="section-title">Compensation</div>
+  <div class="form-grid">
+    <div class="field"><label>Minimum Package (LPA)</label><input name="min_package_lpa" value="{{ j.min_package_lpa or '' }}"></div>
+    <div class="field"><label>Maximum Package (LPA)</label><input name="max_package_lpa" value="{{ j.max_package_lpa or '' }}"></div>
+  </div>
+  <div class="section-title">Eligibility Criteria</div>
+  <div class="form-grid">
+    <div class="field"><label>Qualifications</label><select name="qualifications" multiple size="4">{% for q in qual_rules %}<option {{ 'selected' if q in chosen }}>{{ q }}</option>{% endfor %}</select><div class="hint">Ctrl दाबून एकापेक्षा जास्त निवडा. काहीच न निवडल्यास कोणतीही पात्रता चालते.</div></div>
+    <div class="field"><label>Minimum Percentage</label><input name="min_percentage" value="{{ j.min_percentage or '' }}"></div>
+    <div class="field"><label>Minimum Passing Year</label><input name="min_passing_year" value="{{ j.min_passing_year or '' }}"></div>
+    <div class="field"><label>Maximum Passing Year</label><input name="max_passing_year" value="{{ j.max_passing_year or '' }}"></div>
+    <div class="field"><label>Maximum Backlogs</label><input name="max_backlogs" value="{{ j.max_backlogs if j.max_backlogs is not none else 0 }}"></div>
+    <div class="field"><label>Experience Required (years)</label><input name="experience_min_years" value="{{ j.experience_min_years or 0 }}"></div>
+  </div>
+  <div class="section-title">Skills</div>
+  <div class="form-grid">
+    <div class="field wide"><label>Required Skills (skill_id:MINIMUM_LEVEL)</label><input name="skills" value="{{ skills_text }}" placeholder="1:INTERMEDIATE, 3:INTERMEDIATE, 10:BASIC"><div class="hint">Skill IDs: {% for s in skills_list %}{{ s.skill_id }}={{ s.skill_name }}{{ ', ' if not loop.last }}{% endfor %}</div></div>
+  </div>
+  <div class="section-title">Important Dates</div>
+  <div class="form-grid">
+    <div class="field"><label class="req">Posted Date</label><input type="date" name="posted_date" value="{{ j.posted_date or '' }}" required></div>
+    <div class="field"><label class="req">Application Deadline</label><input type="date" name="application_deadline" value="{{ j.application_deadline or '' }}" required></div>
+    <div class="field"><label class="req">Status</label><select name="status">{% for s in ['DRAFT','OPEN','CLOSED','CANCELLED'] %}<option {{ 'selected' if j.status == s }}>{{ s }}</option>{% endfor %}</select></div>
+  </div>
+  <div class="btn-row">
+    <button class="btn" type="submit">{{ 'Update Job' if job_id else 'Save Job' }}</button>
+    <a class="btn btn-secondary" href="{{ url_for('rpms.jobs') }}">Cancel</a>
+  </div>
+</form>
+{% endblock %}

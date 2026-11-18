@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Placement Process{% endblock %}
+{% block heading %}Selection, Offer &amp; Placement{% endblock %}
+{% block content %}
+<div class="panel"><h2>Create Offer (SELECTED applications)</h2>
+<form method="post" action="{{ url_for('rpms.offer_create') }}" class="form-grid">
+  <div class="field"><label class="req">Application</label><select name="application_id" required><option value="">Select</option>{% for a in selected %}<option value="{{ a.application_id }}">{{ a.application_code }} - {{ a.candidate }} - {{ a.job_code }}</option>{% else %}<option disabled>No SELECTED applications</option>{% endfor %}</select></div>
+  <div class="field"><label class="req">Designation</label><input name="designation" required></div>
+  <div class="field"><label class="req">Offered Package (LPA)</label><input name="package_lpa" required></div>
+  <div class="field"><label class="req">Offer Date</label><input type="date" name="offer_date" required></div>
+  <div class="field"><label>Expected Joining Date</label><input type="date" name="expected_joining_date"></div>
+  <div class="field"><label>Remarks</label><input name="remarks"></div>
+  <div class="btn-row wide"><button class="btn" type="submit">Create Offer</button></div>
+</form></div>
+<div class="panel"><h2>Offers</h2><div class="table-wrap"><table><thead><tr><th>Offer</th><th>Candidate</th><th>Job</th><th>Designation</th><th>Package</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+{% for o in offers %}<tr><td>{{ o.offer_code }}</td><td>{{ o.candidate }}</td><td>{{ o.job_code }}</td><td>{{ o.designation }}</td><td>{{ o.offered_package_lpa }}</td><td>{{ o.offer_status|badge }}</td>
+<td>
+  <form method="post" action="{{ url_for('rpms.offer_status', offer_id=o.offer_id) }}" class="inline-form"><select name="status">{% for s in ['ACCEPTED','REJECTED','EXPIRED','WITHDRAWN'] %}<option>{{ s }}</option>{% endfor %}</select><button class="btn btn-sm btn-outline" type="submit">Set</button></form>
+  {% if o.offer_status == 'ACCEPTED' %}
+  <form method="post" action="{{ url_for('rpms.offer_joining', offer_id=o.offer_id) }}" class="inline-form"><select name="joining_status">{% for s in ['JOINED','NOT_JOINED','DEFERRED','NO_SHOW'] %}<option>{{ s }}</option>{% endfor %}</select><input type="date" name="actual_joining_date"><button class="btn btn-sm" type="submit">Confirm Joining</button></form>
+  {% endif %}
+</td></tr>
+{% else %}<tr><td colspan="7">No offers yet.</td></tr>{% endfor %}
+</tbody></table></div></div>
+<div class="panel"><h2>Placements</h2><div class="table-wrap"><table><thead><tr><th>ID</th><th>Candidate</th><th>Company</th><th>Designation</th><th>Package</th><th>Joining</th></tr></thead><tbody>
+{% for p in placements %}<tr><td>{{ p.placement_id }}</td><td>{{ p.candidate }}</td><td>{{ p.company_name }}</td><td>{{ p.designation }}</td><td>{{ p.final_package_lpa }}</td><td>{{ p.joining_status|badge }}</td></tr>
+{% else %}<tr><td colspan="6">No placements yet.</td></tr>{% endfor %}
+</tbody></table></div></div>
+{% endblock %}

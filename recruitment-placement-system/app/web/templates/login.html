@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Login | Recruitment &amp; Placement</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+<div class="login-wrap"><div class="login-card">
+  <div class="brand-logo"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo"></div>
+  <h1>Recruitment &amp; Placement Management System</h1>
+  <div class="sub">Authorized users only</div>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}<div class="flash flash-{{ category }}" style="background:var(--red-soft);color:var(--red);padding:8px;border-radius:6px">{{ message }}</div>{% endfor %}
+  {% endwith %}
+  <form method="post" action="{{ url_for('rpms.login') }}">
+    <div class="field"><label class="req">Username</label><input name="username" required autofocus></div>
+    <div style="height:10px"></div>
+    <div class="field"><label class="req">Password</label><input type="password" name="password" required></div>
+    <div class="btn-row"><button type="reset" class="btn btn-secondary">Reset</button><button type="submit" class="btn">Login</button></div>
+  </form>
+</div></div>
+</body></html>

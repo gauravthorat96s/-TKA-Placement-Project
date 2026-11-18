@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Companies{% endblock %}
+{% block heading %}Companies{% endblock %}
+{% block content %}
+<form method="get" class="panel"><div class="filters">
+  <div class="field"><label>Company Name</label><input name="company_name" value="{{ filters.company_name }}"></div>
+  <div class="field"><label>Status</label><select name="status"><option value="">All</option><option {{ 'selected' if filters.status == 'ACTIVE' }}>ACTIVE</option><option {{ 'selected' if filters.status == 'INACTIVE' }}>INACTIVE</option></select></div>
+</div><div class="btn-row"><button class="btn" type="submit">Search</button><a class="btn btn-secondary" href="{{ url_for('rpms.companies') }}">Reset</a></div></form>
+<div class="panel"><div class="table-wrap"><table><thead><tr><th>Code</th><th>Company</th><th>Industry</th><th>Location</th><th>Type</th><th>HR Contact</th><th>Status</th><th>Open Jobs</th><th></th></tr></thead><tbody>
+{% for c in rows %}<tr><td>{{ c.company_code }}</td><td>{{ c.company_name }}</td><td>{{ c.industry or '-' }}</td><td>{{ c.location or '-' }}</td><td>{{ c.company_type or '-' }}</td><td>{{ c.hr_name or '-' }}</td><td>{{ c.status|badge }}</td>
+<td><a href="{{ url_for('rpms.jobs', company_id=c.company_id) }}">{{ c.open_jobs }}</a></td>
+<td>{% if c.status == 'ACTIVE' %}<form method="post" action="{{ url_for('rpms.company_deactivate', company_id=c.company_id) }}" class="inline-form"><button class="btn btn-danger btn-sm" type="submit">Deactivate</button></form>{% endif %}</td></tr>
+{% else %}<tr><td colspan="9">No companies.</td></tr>{% endfor %}
+</tbody></table></div></div>
+<div class="panel" id="add-company"><h2>Add Company</h2>
+<form method="post" class="form-grid">
+  <div class="field"><label class="req">Company Name</label><input name="company_name" required></div>
+  <div class="field"><label class="req">Industry</label><input name="industry" required></div>
+  <div class="field"><label>Website</label><input name="website" type="url"></div>
+  <div class="field"><label class="req">Location</label><input name="location" required></div>
+  <div class="field"><label class="req">HR Name</label><input name="hr_name" required></div>
+  <div class="field"><label class="req">HR Email</label><input name="hr_email" required></div>
+  <div class="field"><label>HR Mobile</label><input name="hr_mobile"></div>
+  <div class="field"><label class="req">Company Type</label><select name="company_type">{% for t in ['MNC','STARTUP','MID_SIZE','CONSULTANCY'] %}<option>{{ t }}</option>{% endfor %}</select></div>
+  <div class="field"><label class="req">Status</label><select name="status"><option>ACTIVE</option><option>INACTIVE</option></select></div>
+  <div class="btn-row wide"><button class="btn" type="submit">Add Company</button></div>
+</form></div>
+{% endblock %}

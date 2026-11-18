@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Reports{% endblock %}
+{% block heading %}Reports{% endblock %}
+{% block content %}
+<form method="get" class="panel"><div class="filters">
+  <div class="field"><label>Report</label><select name="name">{% for n, t in available %}<option value="{{ n }}" {{ 'selected' if n == name }}>{{ t }}</option>{% endfor %}</select></div>
+  <div class="field"><label>From</label><input type="date" name="date_from" value="{{ filters.date_from }}"></div>
+  <div class="field"><label>To</label><input type="date" name="date_to" value="{{ filters.date_to }}"></div>
+</div>
+<div class="btn-row"><button class="btn" type="submit">Apply Filters</button>
+<a class="btn btn-outline" href="{{ url_for('rpms.reports_export', name=name, date_from=filters.date_from, date_to=filters.date_to) }}">Export CSV</a>
+<button class="btn btn-secondary" type="button" onclick="window.print()">Print</button></div></form>
+<div class="panel"><div class="table-wrap"><table><thead><tr>{% if rows %}{% for k in rows[0].keys() %}<th>{{ k|replace('_', ' ') }}</th>{% endfor %}{% endif %}</tr></thead><tbody>
+{% for r in rows %}<tr>{% for v in r.values() %}<td>{{ v if v is not none else '-' }}</td>{% endfor %}</tr>{% else %}<tr><td>No data.</td></tr>{% endfor %}
+</tbody></table></div></div>
+{% endblock %}

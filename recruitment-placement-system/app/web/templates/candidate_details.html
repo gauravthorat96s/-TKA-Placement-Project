@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Candidate Details{% endblock %}
+{% block heading %}{{ p.candidate.full_name }}{% endblock %}
+{% block content %}
+{% set c = p.candidate %}
+<div class="summary-banner"><strong>{{ c.candidate_code }}</strong>{{ c.profile_status|badge }}{{ c.placement_status|badge }}<span>{{ c.primary_technology or '-' }}</span><span>{{ p.applications|length }} Applications</span><span>{{ p.offers|length }} Offers</span></div>
+<div class="grid-2">
+  <div class="panel"><h2>Personal Information</h2>
+    <p><strong>Email:</strong> {{ c.email }}<br><strong>Mobile:</strong> {{ c.mobile }}<br><strong>Date of birth:</strong> {{ c.date_of_birth or '-' }}<br><strong>Gender:</strong> {{ c.gender or '-' }}<br><strong>Current location:</strong> {{ c.current_location or '-' }}<br><strong>Preferred location:</strong> {{ c.preferred_location or '-' }}</p></div>
+  <div class="panel"><h2>Academic Details</h2>
+    <p><strong>Qualification:</strong> {{ c.qualification }}<br><strong>College:</strong> {{ c.college or '-' }}<br><strong>University:</strong> {{ c.university or '-' }}<br><strong>Passing year:</strong> {{ c.passing_year }}<br><strong>Percentage:</strong> {{ c.percentage or '-' }}<br><strong>Backlogs:</strong> {{ c.backlog_count }}</p></div>
+</div>
+<div class="panel"><h2>Skills</h2><div class="table-wrap"><table><thead><tr><th>Skill</th><th>Proficiency</th><th>Years</th></tr></thead><tbody>
+{% for s in p.skills %}<tr><td>{{ s.skill_name }}</td><td>{{ s.proficiency_level|badge }}</td><td>{{ s.years_experience }}</td></tr>{% else %}<tr><td colspan="3">No skills recorded.</td></tr>{% endfor %}
+</tbody></table></div></div>
+<div class="panel"><h2>Applications History</h2><div class="table-wrap"><table><thead><tr><th>Application</th><th>Job</th><th>Company</th><th>Eligibility</th><th>Status</th></tr></thead><tbody>
+{% for a in p.applications %}<tr><td><a href="{{ url_for('rpms.applications', history=a.application_id) }}">{{ a.application_code }}</a></td><td>{{ a.job_code }}</td><td>{{ a.company_name }}</td><td>{{ a.eligibility_status|badge }}</td><td>{{ a.application_status|badge }}</td></tr>
+{% else %}<tr><td colspan="5">No applications.</td></tr>{% endfor %}
+</tbody></table></div></div>
+<div class="panel"><h2>Offer / Placement History</h2><div class="table-wrap"><table><thead><tr><th>Offer</th><th>Designation</th><th>Package (LPA)</th><th>Offer Status</th></tr></thead><tbody>
+{% for o in p.offers %}<tr><td>{{ o.offer_code }}</td><td>{{ o.designation }}</td><td>{{ o.offered_package_lpa }}</td><td>{{ o.offer_status|badge }}</td></tr>
+{% else %}<tr><td colspan="4">No offers.</td></tr>{% endfor %}
+</tbody></table></div></div>
+<div class="btn-row">
+  <a class="btn" href="{{ url_for('rpms.candidate_edit', candidate_id=c.candidate_id) }}">Edit Candidate</a>
+  <a class="btn btn-secondary" href="{{ url_for('rpms.candidates') }}">Back to Candidate List</a>
+  {% if c.profile_status == 'ACTIVE' %}
+  <form method="post" action="{{ url_for('rpms.candidate_deactivate', candidate_id=c.candidate_id) }}" class="inline-form"><button class="btn btn-danger" type="submit">Deactivate</button></form>
+  {% endif %}
+</div>
+{% endblock %}

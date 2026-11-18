@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Selection, Offer &amp; Placement | Recruitment &amp; Placement Management System</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><img src="images/logo.png" alt="Kiran Academy logo"><div><strong>Recruitment &amp; Placement</strong><small>Management System</small></div></div>
+  <div class="userbox"><span>Amit Kulkarni</span><span class="role">Recruiter</span><a class="logout" href="login.html">Logout</a></div>
+</header>
+<div class="shell">
+  <nav class="sidebar" aria-label="Main navigation"><a href="dashboard.html" class="">Dashboard</a><a href="candidates.html" class="">Candidates</a><a href="companies.html" class="">Companies</a><a href="jobs.html" class="">Jobs</a><a href="applications.html" class="">Applications</a><a href="interviews.html" class="">Interviews</a><a href="placement-process.html" class="active">Placement Process</a><a href="reports.html" class="">Reports</a><div class="sep"></div><a href="login.html">Logout</a></nav>
+  <main class="content">
+    <div class="crumbs"><a href="dashboard.html">Home</a> / <a href="interviews.html">Interviews</a> / Placement Process</div>
+    <div class="page-head"><h1>Selection, Offer &amp; Placement</h1></div>
+    <div class="summary-banner"><span><strong>Amit Shinde</strong></span><span class="badge b-purple">SELECTED</span>
+  <span>Associate Java Developer</span><span>4.3 LPA</span>
+  <span>Offer <span class="badge b-green">ACCEPTED</span></span><span>Joining 02-Dec-2026 <span class="badge b-green">JOINED</span></span></div>
+<div class="tabs">
+  <input type="radio" id="tab-feedback" name="ptabs" checked>
+  <input type="radio" id="tab-offer" name="ptabs">
+  <input type="radio" id="tab-joining" name="ptabs">
+  <div class="tab-bar"><label for="tab-feedback">1. Interview Feedback</label><label for="tab-offer">2. Offer Details</label><label for="tab-joining">3. Joining / Placement</label></div>
+  <div class="panels">
+    <div class="panel tab-panel p-feedback"><div class="form-grid"><div class="field"><label class="">Technical Rating</label><select><option value="">Select</option><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option></select><div class="hint">Score 1-5</div></div><div class="field"><label class="">Communication Rating</label><select><option value="">Select</option><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option></select><div class="hint">Score 1-5</div></div><div class="field"><label class="">Problem-Solving Rating</label><select><option value="">Select</option><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option></select><div class="hint">Score 1-5</div></div><div class="field"><label class="">Overall Rating</label><select><option value="">Select</option><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option></select><div class="hint">Score 1-5</div></div><div class="field"><label class="req">Interview Result</label><select><option value="">Select</option><option>NEXT_ROUND</option><option selected>SELECTED</option><option>REJECTED</option><option>ON_HOLD</option></select></div><div class="field wide"><label class="">Feedback Remarks</label><textarea>Strong basics; good communication.</textarea></div></div>
+      <div class="btn-row"><button type="button" class="btn">Save Feedback</button> <button type="button" class="btn btn-secondary">Reset</button></div>
+      <p class="hint"><a class="link-action" href="candidate-details.html">Candidate profile</a></p></div>
+    <div class="panel tab-panel p-offer"><div class="form-grid"><div class="field"><label class="req">Designation</label><input type="text" value="Associate Java Developer" placeholder=""></div><div class="field"><label class="req">Offered Package (LPA)</label><input type="text" value="4.3" placeholder=""></div><div class="field"><label class="req">Offer Date</label><input type="date" value="2026-11-17"></div><div class="field"><label class="">Expected Joining Date</label><input type="date" value="2026-12-02"></div><div class="field"><label class="req">Offer Status</label><select><option value="">Select</option><option>OFFERED</option><option selected>ACCEPTED</option><option>REJECTED</option><option>EXPIRED</option><option>WITHDRAWN</option></select></div></div>
+      <div class="btn-row"><button type="button" class="btn">Create Offer</button> <button type="button" class="btn">Update Offer Status</button></div></div>
+    <div class="panel tab-panel p-joining"><div class="form-grid"><div class="field"><label class="req">Actual Joining Date</label><input type="date" value="2026-12-02"><div class="hint">Required when the candidate has joined</div></div><div class="field"><label class="req">Joining Status</label><select><option value="">Select</option><option selected>JOINED</option><option>NOT_JOINED</option><option>DEFERRED</option><option>NO_SHOW</option></select></div><div class="field wide"><label class="">Placement Note</label><textarea>Joined as planned. Placement recorded.</textarea></div></div>
+      <div class="btn-row"><button type="button" class="btn">Confirm Joining</button> <button type="button" class="btn">Mark Placed</button></div>
+      <p class="hint">After placement, <a class="link-action" href="reports.html">view reports</a>.</p></div>
+  </div>
+</div>
+  </main>
+</div>
+<div class="footer">Kiran Academy | Recruitment &amp; Placement Management System | UI Prototype</div>
+</body>
+</html>

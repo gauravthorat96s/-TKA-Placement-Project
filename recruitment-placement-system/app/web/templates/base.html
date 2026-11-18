@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{% endblock %} | Recruitment &amp; Placement</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<style>
+.flash { padding: 10px 14px; border-radius: 6px; margin-bottom: 12px; font-size: 13px; }
+.flash-success { background: var(--green-soft); color: var(--green); }
+.flash-error { background: var(--red-soft); color: var(--red); }
+.inline-form { display: inline; }
+.inline-form select, .inline-form input { width: auto; display: inline-block; font-size: 12px; padding: 3px 6px; }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo"><div><strong>Recruitment &amp; Placement</strong><small>Management System</small></div></div>
+  <div class="userbox"><span>{{ session.user.full_name }}</span><span class="role">{{ session.user.role_code }}</span><a class="logout" href="{{ url_for('rpms.logout') }}">Logout</a></div>
+</header>
+<div class="shell">
+  <nav class="sidebar">
+    {% set items = [('Dashboard','rpms.dashboard'),('Candidates','rpms.candidates'),('Companies','rpms.companies'),('Jobs','rpms.jobs'),('Applications','rpms.applications'),('Interviews','rpms.interviews'),('Placement Process','rpms.placements'),('Reports','rpms.reports')] %}
+    {% for label, endpoint in items %}
+      <a href="{{ url_for(endpoint) }}" class="{{ 'active' if request.endpoint == endpoint }}">{{ label }}</a>
+    {% endfor %}
+    <div class="sep"></div>
+    <a href="{{ url_for('rpms.logout') }}">Logout</a>
+  </nav>
+  <main class="content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}<div class="flash flash-{{ category }}">{{ message }}</div>{% endfor %}
+    {% endwith %}
+    <div class="page-head"><h1>{% block heading %}{% endblock %}</h1></div>
+    {% block content %}{% endblock %}
+  </main>
+</div>
+<div class="footer">Kiran Academy | Recruitment &amp; Placement Management System</div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create / Edit Job | Recruitment &amp; Placement Management System</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><img src="images/logo.png" alt="Kiran Academy logo"><div><strong>Recruitment &amp; Placement</strong><small>Management System</small></div></div>
+  <div class="userbox"><span>Amit Kulkarni</span><span class="role">Recruiter</span><a class="logout" href="login.html">Logout</a></div>
+</header>
+<div class="shell">
+  <nav class="sidebar" aria-label="Main navigation"><a href="dashboard.html" class="">Dashboard</a><a href="candidates.html" class="">Candidates</a><a href="companies.html" class="">Companies</a><a href="jobs.html" class="active">Jobs</a><a href="applications.html" class="">Applications</a><a href="interviews.html" class="">Interviews</a><a href="placement-process.html" class="">Placement Process</a><a href="reports.html" class="">Reports</a><div class="sep"></div><a href="login.html">Logout</a></nav>
+  <main class="content">
+    <div class="crumbs"><a href="dashboard.html">Home</a> / <a href="jobs.html">Job Openings</a> / Create / Edit</div>
+    <div class="page-head"><h1>Create / Edit Job</h1></div>
+    <div class="panel">
+  <div class="section-title">Basic Information</div><div class="form-grid"><div class="field"><label class="req">Company</label><select><option value="">Select</option><option>BluePeak Systems</option><option>CloudBridge India</option><option>DataSphere Labs</option><option>FinEdge Technologies</option><option>NexGen Infotech</option><option>QualityFirst Tech</option><option>RetailIQ Labs</option><option selected>TechNova Solutions</option></select></div><div class="field"><label class="req">Job Code</label><input type="text" value="JOB-2026-001" placeholder=""><div class="hint">Unique job code</div></div><div class="field"><label class="req">Job Title</label><input type="text" value="Associate Java Developer" placeholder=""></div><div class="field"><label class="req">Number of Openings</label><input type="text" value="15" placeholder=""><div class="hint">Must be greater than 0</div></div><div class="field"><label class="req">Employment Type</label><select><option value="">Select</option><option selected>FULL_TIME</option><option>INTERNSHIP</option><option>CONTRACT</option></select></div><div class="field"><label class="req">Location</label><input type="text" value="Pune" placeholder=""></div></div>
+  <div class="section-title">Compensation</div><div class="form-grid"><div class="field"><label class="">Minimum Package (LPA)</label><input type="text" value="4.0" placeholder=""></div><div class="field"><label class="">Maximum Package (LPA)</label><input type="text" value="5.5" placeholder=""><div class="hint">Example validation: min must not exceed max</div><div class="field-error">Minimum package cannot exceed maximum package.</div></div></div>
+  <div class="section-title">Eligibility Criteria</div><div class="form-grid"><div class="field"><label class="req">Qualifications</label><select><option value="">Select</option><option selected>BE</option><option>BTech</option><option>MCA</option><option>BCA</option><option>BSc</option></select><div class="hint">Hold Ctrl/Cmd to choose several</div></div><div class="field"><label class="req">Minimum Percentage</label><input type="text" value="60" placeholder=""></div><div class="field"><label class="">Minimum Passing Year</label><select><option value="">Select</option><option>2023</option><option selected>2024</option><option>2025</option></select></div><div class="field"><label class="">Maximum Passing Year</label><select><option value="">Select</option><option>2025</option><option selected>2026</option></select></div><div class="field"><label class="req">Maximum Backlogs</label><input type="text" value="0" placeholder=""></div><div class="field"><label class="">Experience Required (years)</label><input type="text" value="0" placeholder=""><div class="hint">Experience criteria, 0 for freshers</div></div></div>
+  <div class="section-title">Skills</div><div class="form-grid"><div class="field"><label class="req">Required Technology</label><select><option value="">Select</option><option selected>Java</option><option>Python</option><option>SQL</option><option>Testing</option><option>Data Analytics</option></select></div><div class="field wide"><label class="req">Required Skills</label><input type="text" value="Java (Intermediate), SQL (Intermediate), Testing (Basic)" placeholder=""></div></div>
+  <div class="section-title">Important Dates</div><div class="form-grid"><div class="field"><label class="req">Posted Date</label><input type="date" value="2026-10-01"></div><div class="field"><label class="req">Application Deadline</label><input type="date" value="2026-10-31"><div class="hint">Example validation message</div><div class="field-error">Application deadline cannot be before posted date.</div></div><div class="field"><label class="req">Status</label><select><option value="">Select</option><option>DRAFT</option><option selected>OPEN</option><option>CLOSED</option></select></div></div>
+  <div class="btn-row"><a class="btn" href="jobs.html">Save Job</a> <a class="btn" href="jobs.html">Update Job</a> <a class="btn btn-secondary" href="jobs.html">Cancel</a></div>
+</div>
+  </main>
+</div>
+<div class="footer">Kiran Academy | Recruitment &amp; Placement Management System | UI Prototype</div>
+</body>
+</html>

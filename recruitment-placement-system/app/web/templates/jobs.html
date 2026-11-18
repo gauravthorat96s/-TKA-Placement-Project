@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Jobs{% endblock %}
+{% block heading %}Job Openings{% endblock %}
+{% block content %}
+<form method="get" class="panel"><div class="filters">
+  <div class="field"><label>Job Code</label><input name="job_code" value="{{ filters.job_code }}"></div>
+  <div class="field"><label>Status</label><select name="status"><option value="">All</option>{% for s in statuses %}<option {{ 'selected' if filters.status == s }}>{{ s }}</option>{% endfor %}</select></div>
+  <div class="field"><label>Technology</label><input name="technology" value="{{ filters.technology }}" placeholder="Java / SQL"></div>
+</div><div class="btn-row"><button class="btn" type="submit">Search</button><a class="btn btn-secondary" href="{{ url_for('rpms.jobs') }}">Reset</a><a class="btn" href="{{ url_for('rpms.job_form') }}">Create Job</a></div></form>
+<div class="panel"><div class="table-wrap"><table><thead><tr><th>Job Code</th><th>Company</th><th>Title</th><th>Type</th><th>Location</th><th>Openings</th><th>Deadline</th><th>Status</th><th>Applications</th><th>Actions</th></tr></thead><tbody>
+{% for j in rows %}<tr><td>{{ j.job_code }}</td><td>{{ j.company_name }}</td><td>{{ j.job_title }}</td><td>{{ j.employment_type }}</td><td>{{ j.location }}</td><td>{{ j.openings }}</td><td>{{ j.application_deadline }}</td><td>{{ j.status|badge }}</td><td>{{ j.applications }}</td>
+<td><a class="link-action" href="{{ url_for('rpms.job_form', job_id=j.job_id) }}">Edit</a><a class="link-action" href="{{ url_for('rpms.applications', job_id=j.job_id) }}">View Applications</a>
+<form method="post" action="{{ url_for('rpms.job_status', job_id=j.job_id) }}" class="inline-form"><select name="status">{% for s in statuses %}<option {{ 'selected' if s == j.status }}>{{ s }}</option>{% endfor %}</select><button class="btn btn-sm btn-outline" type="submit">Set</button></form></td></tr>
+{% else %}<tr><td colspan="10">No jobs found.</td></tr>{% endfor %}
+</tbody></table></div></div>
+{% endblock %}
